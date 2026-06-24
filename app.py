@@ -1,116 +1,105 @@
 import os
-import uuid # generates unique IDs so Square doesn't double-charge
+import requests
 from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
-from square_legacy.client import Client
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_talisman import Talisman
+from markupsafe import escape
 
-# Load the secret keys from the .env file
+# Load the secret keys
 load_dotenv()
 
 app = Flask(__name__)
 
-# Initialize the Square Client
-square_client = Client(
-    access_token=os.environ.get('SQUARE_ACCESS_TOKEN'),
-    environment=os.environ.get('SQUARE_ENVIRONMENT', 'sandbox')
+# SECURITY HEADERS
+Talisman(app, content_security_policy=None)
+
+# RATE LIMITING
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
 )
 
-# This route serves the website when someone goes to the homepage
+
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# This route catches the form data when a user hits "Submit"
-@app.route('/submit-quote', methods=['POST'])
-def submit_quote():
-    #Grabs the JSON data sent from the website
-    data = request.json
-    location_id = os.environ.get('SQUARE_LOCATION_ID')
 
-    #Extract data from the frontend form
-    client_name = data.get('name', 'Unkown Client')
-    client_email = data.get('email')
-    client_phone = data.get('phone')
-    services = data.get('services', [])
-    details = data.get('message', '')
+@app.route('/submit-quote', methods=['POST'])
+@limiter.limit("3 per minute")
+def submit_quote():
+    data = request.json
+
+    # Grab Clover credentials
+    api_key = os.environ.get('CLOVER_API_KEY')
+    merchant_id = os.environ.get('CLOVER_MERCHANT_ID')
+    environment = os.environ.get('CLOVER_ENVIRONMENT', 'sandbox')
+
+    # Set the correct Clover URL based on environment
+    if environment.lower() == 'production':
+        base_url = f"https://api.clover.com/v3/merchants/{merchant_id}"
+    else:
+        base_url = f"https://apisandbox.dev.clover.com/v3/merchants/{merchant_id}"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    # INPUT SANITIZATION
+    client_name = escape(data.get('name', 'Unknown Client'))
+    client_email = escape(data.get('email', ''))
+    client_phone = escape(data.get('phone', ''))
+
+    services = []
+    for service in data.get('services', []):
+        services.append(escape(service))
+
+    details = escape(data.get('message', ''))
 
     try:
-        # Create a Customer Profile in Square
-        customer_body = {
-            "idempotency_key": str(uuid.uuid4()),  # Ensures this request only processes once
-            "given_name": client_name,
-            "email_address": client_email,
-            "phone_number": client_phone
+        # Creates a Customer Profile in Clover
+        customer_payload = {
+            "firstName": client_name,
+            "emailAddresses": [{"emailAddress": client_email}],
+            "phoneNumbers": [{"phoneNumber": client_phone}]
         }
-        customer_response = square_client.customers.create_customer(body=customer_body)
 
-        if customer_response.is_error():
-            return jsonify({"status": "error", "message": "Failed to create customer profile."}), 400
+        customer_res = requests.post(f"{base_url}/customers", json=customer_payload, headers=headers)
 
-        # Grab the new Customer ID that Square just generated
-        customer_id = customer_response.body['customer']['id']
+        if customer_res.status_code not in [200, 201]:
+            return jsonify({"status": "error", "message": "Failed to create Clover customer profile."}), 400
 
-        # Create an Order (Square requires an order before creating an invoice)
+        customer_data = customer_res.json()
+        customer_id = customer_data.get('id')
+
+        # Creates a Draft Order in Clover
         service_description = f"Requested Services: {', '.join(services)}. Details: {details}"
 
-        order_body = {
-            "idempotency_key": str(uuid.uuid4()),
-            "order": {
-                "location_id": location_id,
-                "customer_id": customer_id,
-                "line_items": [
-                    {
-                        "name": "Custom Construction Estimate",
-                        "note": service_description,
-                        "quantity": "1",
-                        "base_price_money": {
-                            "amount": 0,  # Starts as a $0.00 draft until you update it with the real price
-                            "currency": "USD"
-                        }
-                    }
-                ]
-            }
+        order_payload = {
+            "state": "open",
+            "title": "Website Quote Request",
+            "note": service_description,
+            "customers": [{"id": customer_id}]
         }
-        order_response = square_client.orders.create_order(body=order_body)
 
-        if order_response.is_error():
-            return jsonify({"status": "error", "message": "Failed to create order."}), 400
+        order_res = requests.post(f"{base_url}/orders", json=order_payload, headers=headers)
 
-        # Grab the new Order ID
-        order_id = order_response.body['order']['id']
+        if order_res.status_code not in [200, 201]:
+            return jsonify({"status": "error", "message": "Failed to draft Clover order."}), 400
 
-        # Create the Draft Invoice
-        invoice_body = {
-            "idempotency_key": str(uuid.uuid4()),
-            "invoice": {
-                "location_id": location_id,
-                "order_id": order_id,
-                "primary_recipient": {
-                    "customer_id": customer_id
-                },
-                "payment_requests": [
-                    {
-                        "request_type": "BALANCE",
-                        "due_date": "2026-07-15",  # Placeholder due date
-                    }
-                ],
-                "delivery_method": "EMAIL",
-                "title": "K.A.F. Construction Quote Request"
-            }
-        }
-        invoice_response = square_client.invoices.create_invoice(body=invoice_body)
-
-        if invoice_response.is_error():
-            return jsonify({"status": "error", "message": "Failed to draft invoice."}), 400
-
-        # If all 3 steps succeed, send a success message back to the website
         return jsonify({
             "status": "success",
-            "message": "Quote request received! Invoice draft generated in Square."
+            "message": "Quote request received! Order drafted in Clover."
         }), 200
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+
 if __name__ == '__main__':
-        app.run(debug=True, port=5001)
+    app.run(debug=True, port=5001)
