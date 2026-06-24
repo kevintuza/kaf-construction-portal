@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K.A.F. Construction LLC | General Contracting & Carpentry</title>
+    <!-- Updated for Netlify -->
+    <link rel="icon" type="image/png" href="static/images/kaf-logo.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM --- */
+        :root {
+            --primary: #0f2b46;
+            --accent: #ff8c00;
+            --accent-dark: #cc5200;
+            --light: #f8f9fa;
+            --text: #333333;
+            --text-light: #666666;
+            --radius: 6px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background-color: #ffffff;
+        }
+        img { max-width: 100%; display: block; }
+
+        /* --- HEADER --- */
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 15px; }
+        .logo-img {
+            height: 55px; width: auto; border-radius: 50%;
+            border: 2px solid var(--accent); box-shadow: 0 4px 10px rgba(255, 140, 0, 0.2);
+        }
+        .logo-text { font-size: 1.3rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .cta-btn {
+            background: var(--accent); color: white; padding: 12px 28px;
+            border-radius: var(--radius); text-decoration: none; font-weight: 600;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.2);
+        }
+        .cta-btn:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255, 140, 0, 0.3); }
+
+        /* --- HERO SECTION --- */
+        /* Updated for Netlify */
+        .hero {
+            background: linear-gradient(rgba(15, 43, 70, 0.88), rgba(15, 43, 70, 0.7)),
+                        url("static/images/Roofing\ \(1\).png");
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: white; text-align: center; padding: 160px 20px;
+        }
+        .hero h1 { font-size: 3.8rem; margin-bottom: 15px; font-weight: 800; line-height: 1.1; letter-spacing: -1px; }
+        .hero h1::after { content: ''; display: block; width: 60px; height: 4px; background: var(--accent); margin: 25px auto 0; border-radius: 2px; }
+        .hero p { font-size: 1.25rem; opacity: 0.9; max-width: 600px; margin: 20px auto 0; font-weight: 400; }
+
+        /* --- TRUST BAR --- */
+        .trust-bar {
+            background: var(--primary); color: white; display: flex; justify-content: center; gap: 40px; padding: 20px; font-size: 0.95rem; font-weight: 500; flex-wrap: wrap;
+        }
+        .trust-item { display: flex; align-items: center; gap: 8px; }
+        .trust-item::before { content: '✓'; color: var(--accent); font-weight: bold; }
+
+        /* --- LAYOUTS --- */
+        section { padding: 90px 5%; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        h2 { color: var(--primary); font-size: 2.4rem; margin: 0 0 10px 0; font-weight: 800; letter-spacing: -0.5px; }
+        .subtitle { color: var(--text-light); font-size: 1.1rem; }
+
+        /* --- SERVICES --- */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .service-card {
+            background: #fff; padding: 40px 30px; border-radius: var(--radius);
+            border: 1px solid #eaeaea; border-top: 4px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+        .service-card h3 { color: var(--primary); font-size: 1.5rem; margin-top: 0; }
+        .service-card p { color: var(--text-light); margin-bottom: 0; }
+
+        /* --- GALLERY --- */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .gallery-item { overflow: hidden; border-radius: var(--radius); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .gallery-item img { width: 100%; height: 320px; object-fit: cover; transition: transform 0.6s ease; }
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        /* --- FORMS --- */
+        .contact-container { max-width: 650px; margin: 0 auto; background: #fff; padding: 50px; border-radius: 12px; box-shadow: 0 20px 40px rgba(15, 43, 70, 0.08); border: 1px solid #f0f0f0; }
+        form { display: flex; flex-direction: column; gap: 20px; }
+
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 0.9rem; font-weight: 600; color: var(--primary); }
+        input, textarea {
+            padding: 16px; border: 2px solid #eef0f2; border-radius: var(--radius);
+            font-size: 1rem; width: 100%; box-sizing: border-box; font-family: inherit;
+            transition: all 0.3s; background: #fafafa;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1); }
+
+        .service-options { background: #f8fbff; padding: 25px; border-radius: var(--radius); border: 1px solid #e1ecf8; margin-top: 10px; }
+        .service-options p { margin: 0 0 15px 0; font-weight: 600; color: var(--primary); }
+        .checkbox-grid { display: flex; flex-wrap: wrap; gap: 20px; }
+        .checkbox-grid label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500; }
+        .checkbox-grid input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+
+        button {
+            background: var(--primary); color: white; padding: 18px; border: none; cursor: pointer;
+            font-size: 1.1rem; border-radius: var(--radius); font-weight: 800; transition: all 0.3s; margin-top: 10px;
+        }
+        button:hover { background: #0a1f33; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 43, 70, 0.2); }
+
+        /* --- FOOTER --- */
+        footer { background: var(--primary); color: white; text-align: center; padding: 60px 20px 40px; }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; color: #fff; }
+        .footer-info { color: #a0b0c0; font-size: 0.95rem; margin-bottom: 30px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; color: #7a8b9c; font-size: 0.85rem; }
+
+        /* --- SCROLL ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .logo-text { font-size: 1.1rem; }
+            header { padding: 15px; }
+            .contact-container { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <!-- Updated for Netlify -->
+            <img src="static/images/kaf-logo.png" alt="K.A.F. Construction Logo" class="logo-img">
+            <div class="logo-text">K.A.F. Construction</div>
+        </div>
+        <a href="#contact" class="cta-btn">Get a Quote</a>
+    </header>
+
+    <section class="hero">
+        <h1>Solid Foundations.<br>Quality Builds.</h1>
+        <p>Expert Carpentry, Plumbing & Home Renovations.</p>
+    </section>
+
+    <div class="trust-bar">
+        <span class="trust-item">Fully Licensed & Insured</span>
+        <span class="trust-item">Serving the Hudson Valley</span>
+        <span class="trust-item">Free Estimates</span>
+    </div>
+
+    <section id="services" class="reveal" style="background-color: var(--light);">
+        <div class="section-header">
+            <h2>Our Expertise</h2>
+            <p class="subtitle">Comprehensive solutions for your property.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Custom Carpentry</h3>
+                <p>Framing, decking, trim, and structural repairs built with precision to stand the test of time.</p>
+            </div>
+            <div class="service-card">
+                <h3>Kitchens & Baths</h3>
+                <p>Complete transformations including custom cabinetry, premium flooring, and flawless finishes.</p>
+            </div>
+            <div class="service-card">
+                <h3>Electric & Plumbing</h3>
+                <p>We handle the essential trades in-house, ensuring seamless coordination for your renovation.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="reveal">
+        <div class="section-header">
+            <h2>Recent Projects</h2>
+            <p class="subtitle">A look at our recent craftsmanship in the area.</p>
+        </div>
+        <div class="gallery-grid">
+            <!-- Updated for Netlify -->
+            <div class="gallery-item"><img src="static/images/Kitchen.png" alt="Kitchen Remodel"></div>
+            <div class="gallery-item"><img src="static/images/Cabinet.png" alt="Custom Cabinetry"></div>
+            <div class="gallery-item"><img src="static/images/Fireplace (1).png" alt="Fireplace Installation"></div>
+        </div>
+    </section>
+
+    <section id="contact" class="reveal" style="background-color: var(--light);">
+        <div class="section-header">
+            <h2>Start Your Project</h2>
+            <p class="subtitle">Call us directly at <strong>(914) 582-7007</strong> or request a digital quote below.</p>
+        </div>
+        <div class="contact-container">
+            <form id="quoteForm">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 250px;">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="input-group" style="flex: 1; min-width: 250px;">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(555) 555-5555" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                </div>
+
+                <div class="service-options">
+                    <p>What type of work do you need?</p>
+                    <div class="checkbox-grid">
+                        <label><input type="checkbox" name="service" value="Carpentry"> Carpentry</label>
+                        <label><input type="checkbox" name="service" value="Plumbing"> Plumbing</label>
+                        <label><input type="checkbox" name="service" value="Electrical"> Electrical</label>
+                        <label><input type="checkbox" name="service" value="Remodel"> Full Remodel</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="message">Project Details</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Tell us a bit about your timeline and what you're looking to achieve..." required></textarea>
+                </div>
+
+                <button type="submit">Request Consultation</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">K.A.F. Construction LLC</div>
+        <div class="footer-info">
+            <p>Expert General Contracting & Trades</p>
+            <p>Serving Dutchess County, Orange County & The Hudson Valley</p>
+            <p style="margin-top: 15px; font-weight: bold; color: var(--accent);">(914) 582-7007</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 K.A.F. Construction LLC. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+
+    document.getElementById('quoteForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const form = document.getElementById('quoteForm');
+        const container = form.parentElement;
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = 'Sending Request...';
+        submitBtn.style.opacity = '0.8';
+        submitBtn.disabled = true;
+
+        const services = [];
+        document.querySelectorAll('input[name="service"]:checked').forEach((checkbox) => {
+            services.push(checkbox.value);
+        });
+
+        const formData = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            services: services,
+            message: document.getElementById('message').value
+        };
+
+        try {
+            const response = await fetch('/submit-quote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <div style="width: 60px; height: 60px; background: #e8f5e9; color: #2e7d32; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px;">✓</div>
+                        <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 10px;">Request Received</h3>
+                        <p style="font-size: 1.1rem; color: var(--text-light);">Thank you, ${formData.name}. We've received your project details and will be in touch shortly.</p>
+                    </div>
+                `;
+            } else {
+                alert('Something went wrong. Please try again.');
+                submitBtn.innerText = originalBtnText;
+                submitBtn.style.opacity = '1';
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            alert('Could not connect to the server.');
+            submitBtn.innerText = originalBtnText;
+            submitBtn.style.opacity = '1';
+            submitBtn.disabled = false;
+        }
+    });
+    </script>
+</body>
+</html>
