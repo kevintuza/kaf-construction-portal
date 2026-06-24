@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K.A.F. Construction LLC | General Contracting & Carpentry</title>
+    <link rel="icon" type="image/png" href="static/images/kaf-logo.png">
+    <style>
+        /* --- 1. THE DESIGN SYSTEM (Blue & Orange) --- */
+        :root {
+            --primary: #0f2b46;      /* Deep Navy Blue */
+            --accent: #ff8c00;       /* Safety Orange */
+            --accent-dark: #cc5200;  /* Darker Orange (for hover) */
+            --light: #f8f9fa;        /* Clean White/Grey */
+            --text: #222222;         /* Dark Grey text */
+        }
+
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--text); line-height: 1.6; }
+        img { max-width: 100%; display: block; }
+        
+        /* --- 2. HEADER --- */
+        header { 
+            background: #fff; 
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        /* --- NEW LOGO STYLING --- */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-btn {
+            background: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .cta-btn:hover { background: var(--accent-dark); }
+
+        /* --- 3. HERO SECTION (The Big Image) --- */
+        .hero {
+            /* FIXED: Updated to static/images path */
+            background: linear-gradient(rgba(15, 43, 70, 0.85), rgba(15, 43, 70, 0.6)),
+                        url('static/images/Roofing (1).png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 140px 20px;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .hero h1::after {
+            content: ''; display: block; width: 80px; height: 5px;
+            background: var(--accent); margin: 20px auto 0;
+        }
+
+        /* --- 4. SECTIONS LAYOUT --- */
+        section { padding: 60px 5%; }
+        h2 { text-align: center; color: var(--primary); font-size: 2rem; margin-bottom: 40px; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .service-card { background: var(--light); padding: 30px; text-align: center; border-radius: 8px; border-bottom: 4px solid var(--accent); }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .gallery-item img { width: 100%; height: 250px; object-fit: cover; border-radius: 4px; transition: transform 0.3s; }
+        .gallery-item img:hover { transform: scale(1.02); }
+
+        /* --- 5. CONTACT FORM --- */
+        .contact-container { max-width: 600px; margin: 0 auto; }
+        form { display: flex; flex-direction: column; gap: 15px; }
+        input, textarea { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; width: 100%; box-sizing: border-box; }
+        button { background: var(--primary); color: white; padding: 15px; border: none; cursor: pointer; font-size: 1.1rem; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #0a1f33; }
+
+        /* --- 6. FOOTER --- */
+        footer { background: var(--primary); color: white; text-align: center; padding: 30px 20px; font-size: 0.9rem; }
+
+        /* --- 7. MOBILE TWEAKS --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .logo-text { font-size: 1.1rem; }
+            .logo-img { height: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <!-- FIXED: Updated to static/images path -->
+            <img src="static/images/kaf-logo.png" alt="K.A.F. Construction Logo" class="logo-img">
+            <div class="logo-text">K.A.F. Construction LLC</div>
+        </div>
+        <a href="#contact" class="cta-btn">Get a Quote</a>
+    </header>
+
+    <section class="hero">
+        <h1>Solid Foundations. Quality Builds.</h1>
+        <p>Expert Carpentry, Plumbing & Home Renovations.</p>
+    </section>
+
+    <section id="services">
+        <h2>Our Expertise</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Custom Carpentry</h3>
+                <p>Framing, decking, trim, and structural repairs built to last.</p>
+            </div>
+            <div class="service-card">
+                <h3>Kitchens & Baths</h3>
+                <p>Full remodels including cabinetry, flooring, and finishes.</p>
+            </div>
+            <div class="service-card">
+                <h3>Electric & Plumbing</h3>
+                <p>We handle the essential trades so you don't have to hire three different companies.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" style="background-color: #fafafa;">
+        <h2>Recent Projects</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="static/images/Kitchen.png" alt="Kitchen Remodel"></div>
+            <div class="gallery-item"><img src="static/images/Cabinet.png" alt="Cabinet"></div>
+            <div class="gallery-item"><img src="static/images/Fireplace (1).png" alt="Fireplace"></div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Start Your Project</h2>
+        <div class="contact-container">
+            <p style="text-align: center; margin-bottom: 20px;">Fill out the form below or call us at <strong>(914) 582-7007</strong>.</p>
+
+            <!-- FIXED: Removed Formspree, added ID for JavaScript -->
+            <form id="quoteForm">
+
+                <div style="display: flex; gap: 15px;">
+                    <!-- FIXED: Added ID attributes to inputs -->
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                </div>
+
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+                <div style="background: #fff; padding: 15px; border: 1px solid #ccc; border-radius: 4px;">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: var(--primary);">Service Needed:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                        <label><input type="checkbox" name="service" value="Carpentry"> Carpentry</label>
+                        <label><input type="checkbox" name="service" value="Plumbing"> Plumbing</label>
+                        <label><input type="checkbox" name="service" value="Electrical"> Electric</label>
+                        <label><input type="checkbox" name="service" value="Remodel"> Remodel</label>
+                    </div>
+                </div>
+
+                <textarea id="message" name="message" rows="5" placeholder="Project details..." required></textarea>
+                <button type="submit">Submit Request</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 K.A.F. Construction LLC. All Rights Reserved.</p>
+        <p>Licensed & Insured | Serving Dutchess County & Orange County</p>
+    </footer>
+
+    <!-- FIXED: Added JavaScript to send form data to your Python server -->
+    <script>
+    document.getElementById('quoteForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const services = [];
+        document.querySelectorAll('input[name="service"]:checked').forEach((checkbox) => {
+            services.push(checkbox.value);
+        });
+
+        const formData = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            services: services,
+            message: document.getElementById('message').value
+        };
+
+        try {
+            const response = await fetch('/submit-quote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('Success! Your request has been sent to the server.');
+                document.getElementById('quoteForm').reset();
+            } else {
+                alert('Error: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Could not connect to the server.');
+        }
+    });
+    </script>
+
+</body>
+</html>
