@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K.A.F. Construction LLC | General Contracting & Carpentry</title>
-    <link rel="icon" type="image/png" href="static/images/kaf-logo.png">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/kaf-logo.png') }}">
     <style>
-        /* --- 1. THE DESIGN SYSTEM (Blue & Orange) --- */
+        /* --- THE DESIGN SYSTEM (Blue & Orange) --- */
         :root {
             --primary: #0f2b46;      /* Deep Navy Blue */
             --accent: #ff8c00;       /* Safety Orange */
@@ -17,10 +17,10 @@
 
         body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--text); line-height: 1.6; }
         img { max-width: 100%; display: block; }
-        
-        /* --- 2. HEADER --- */
-        header { 
-            background: #fff; 
+
+        /* --- HEADER --- */
+        header {
+            background: #fff;
             padding: 0.8rem 5%;
             display: flex;
             justify-content: space-between;
@@ -69,9 +69,9 @@
 
         /* --- 3. HERO SECTION (The Big Image) --- */
         .hero {
-            /* FIXED: Updated to static/images path */
+            /* FIXED: Added url_for to the background image CSS */
             background: linear-gradient(rgba(15, 43, 70, 0.85), rgba(15, 43, 70, 0.6)),
-                        url('static/images/Roofing (1).png');
+                        url("{{ url_for('static', filename='images/Roofing (1).png') }}");
             background-size: cover;
             background-position: center;
             color: white;
@@ -84,7 +84,7 @@
             background: var(--accent); margin: 20px auto 0;
         }
 
-        /* --- 4. SECTIONS LAYOUT --- */
+        /* --- SECTIONS LAYOUT --- */
         section { padding: 60px 5%; }
         h2 { text-align: center; color: var(--primary); font-size: 2rem; margin-bottom: 40px; }
 
@@ -95,17 +95,17 @@
         .gallery-item img { width: 100%; height: 250px; object-fit: cover; border-radius: 4px; transition: transform 0.3s; }
         .gallery-item img:hover { transform: scale(1.02); }
 
-        /* --- 5. CONTACT FORM --- */
+        /* --- CONTACT FORM --- */
         .contact-container { max-width: 600px; margin: 0 auto; }
         form { display: flex; flex-direction: column; gap: 15px; }
         input, textarea { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; width: 100%; box-sizing: border-box; }
         button { background: var(--primary); color: white; padding: 15px; border: none; cursor: pointer; font-size: 1.1rem; border-radius: 4px; font-weight: bold; }
         button:hover { background: #0a1f33; }
 
-        /* --- 6. FOOTER --- */
+        /* --- FOOTER --- */
         footer { background: var(--primary); color: white; text-align: center; padding: 30px 20px; font-size: 0.9rem; }
 
-        /* --- 7. MOBILE TWEAKS --- */
+        /* --- MOBILE TWEAKS --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             .logo-text { font-size: 1.1rem; }
@@ -117,8 +117,7 @@
 
     <header>
         <div class="logo-container">
-            <!-- FIXED: Updated to static/images path -->
-            <img src="static/images/kaf-logo.png" alt="K.A.F. Construction Logo" class="logo-img">
+            <img src="{{ url_for('static', filename='images/kaf-logo.png') }}" alt="K.A.F. Construction Logo" class="logo-img">
             <div class="logo-text">K.A.F. Construction LLC</div>
         </div>
         <a href="#contact" class="cta-btn">Get a Quote</a>
@@ -150,9 +149,9 @@
     <section id="portfolio" style="background-color: #fafafa;">
         <h2>Recent Projects</h2>
         <div class="gallery-grid">
-            <div class="gallery-item"><img src="static/images/Kitchen.png" alt="Kitchen Remodel"></div>
-            <div class="gallery-item"><img src="static/images/Cabinet.png" alt="Cabinet"></div>
-            <div class="gallery-item"><img src="static/images/Fireplace (1).png" alt="Fireplace"></div>
+            <div class="gallery-item"><img src="{{ url_for('static', filename='images/Kitchen.png') }}" alt="Kitchen Remodel"></div>
+            <div class="gallery-item"><img src="{{ url_for('static', filename='images/Cabinet.png') }}" alt="Cabinet"></div>
+            <div class="gallery-item"><img src="{{ url_for('static', filename='images/Fireplace (1).png') }}" alt="Fireplace"></div>
         </div>
     </section>
 
@@ -161,11 +160,9 @@
         <div class="contact-container">
             <p style="text-align: center; margin-bottom: 20px;">Fill out the form below or call us at <strong>(914) 582-7007</strong>.</p>
 
-            <!-- FIXED: Removed Formspree, added ID for JavaScript -->
             <form id="quoteForm">
 
                 <div style="display: flex; gap: 15px;">
-                    <!-- FIXED: Added ID attributes to inputs -->
                     <input type="text" id="name" name="name" placeholder="Your Name" required>
                     <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
                 </div>
@@ -189,11 +186,10 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 K.A.F. Construction LLC. All Rights Reserved.</p>
+        <p>&copy; 2026 K.A.F. Construction LLC. All Rights Reserved.</p>
         <p>Licensed & Insured | Serving Dutchess County & Orange County</p>
     </footer>
 
-    <!-- FIXED: Added JavaScript to send form data to your Python server -->
     <script>
     document.getElementById('quoteForm').addEventListener('submit', async (e) => {
         e.preventDefault();
